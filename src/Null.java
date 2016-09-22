@@ -13,11 +13,6 @@ import java.util.Queue;
  * @version 1.0
  */
 
-/**
- * @author Hansi Mou
- *
- *         Sep 20, 2016
- */
 public class Null {
 	// unchanged variables
 	int[] ave;
@@ -150,7 +145,9 @@ public class Null {
 			}
 			path.append("\n");
 		}
-		System.out.println(path.toString());
+//		System.out.println(path.toString());
+//        System.out.println(isValid(path.toString()));
+        System.out.println(calculateValue(path.toString()));
 		return path.toString();
 	}
 
@@ -218,4 +215,43 @@ public class Null {
 		}
 		return next;
 	}
+
+	public boolean isValid(String res) {
+        String[] array = res.split("\n");
+		for (int i = 0; i < array.length; i++) {
+            if (array[i] != null && array[i].length() != 0) {
+                int last = -1;
+                int currentTime = -1;
+                for (String tmp : array[i].split(" ")) {
+                    int site = Integer.parseInt(tmp);
+                    if (currentTime == -1) {
+                        currentTime = beginHour[site][i+1]*60+desiredTime[site];
+                        last = site;
+                    } else {
+                        int earliestArriveTime = currentTime+Math.abs(ave[site]-ave[last])+
+                                Math.abs(street[site]-street[last]);
+                        if (earliestArriveTime+desiredTime[site] > endHour[site][i+1]*60) {
+                            return false;
+                        }
+                        currentTime = Math.max(earliestArriveTime, beginHour[site][i+1]*60)+desiredTime[site];
+                        last = site;
+                    }
+                }
+            }
+		}
+        return true;
+	}
+
+    public double calculateValue(String res) {
+        double sum = 0;
+        HashSet<Integer> hs = new HashSet<Integer>();
+        for (String s1 : res.split("\n")) {
+            for (String site : s1.split(" ")) {
+                if (hs.add(Integer.parseInt(site))) {
+                    sum += value[Integer.parseInt(site)];
+                }
+            }
+        }
+        return sum;
+    }
 }

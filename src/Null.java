@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class Null {
-  public static Null data;
 
   // unchanged variables
   int[] ave;
@@ -30,9 +29,33 @@ public class Null {
   HashSet<Integer> visited;
 
   public static void main(String[] args) {
+    long start = System.currentTimeMillis();
+
     String fileNameString = "input.txt";
-    Null ot = new Null(fileNameString);
-    ot.search();
+
+    Null data = new Null(fileNameString);
+    SLAlgo.init(data);
+    if (SLAlgo.mValue[0] > Integer.MAX_VALUE) {
+      System.out.println("Maximum value exceeds INT_MAX");
+      return;
+    }
+    int maxValue = (int) SLAlgo.mValue[0];
+    OneDayAStar aStar = new OneDayAStar(maxValue + 2);
+
+    // this is the time limit to run this function, in milliseconds
+    // so I set it as 100 second,
+    String result = aStar.startSearch(100 * 1000);
+
+    System.out.println("time:" + (System.currentTimeMillis() - start));
+    System.out.println(result);
+    System.out.println(data.isValid(result));
+    System.out.println(data.calculateValue(result));
+//
+//    Null ot = new Null(fileNameString);
+//    System.out.println(ot.isValid(result));
+//
+//    System.out.println(ot.calculateValue(result));
+//    ot.search();
   }
 
   public Null(String name) {
@@ -56,7 +79,6 @@ public class Null {
     for (double d : value) {
       totalValue += d;
     }
-    Null.data = this;
   }
 
   public void AssignValues(String fileName) {
@@ -254,7 +276,6 @@ public class Null {
           sum += value[Integer.parseInt(site)];
         }
       }
-      System.out.println(sum);
     }
     return sum;
   }

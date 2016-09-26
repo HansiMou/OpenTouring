@@ -1,46 +1,71 @@
 import java.util.*;
 
 public abstract class AStar {
-  List<State> stateList = new ArrayList<>(100000);
-  List<State> results = new ArrayList<>();
+  State result;
 
-  int start = 0;
-  int MAX = 1;
-  int currentResult = 0;
+  int lastMax;
+  Queue<State>[] states;
+
+
+  public AStar(int maxValue) {
+    lastMax = maxValue;
+    states = new Queue[maxValue + 1];
+    for (int i = 0; i <= maxValue; i++) {
+      states[i] = new LinkedList<>();
+    }
+  }
 
   protected abstract State getInitState();
 
   public void addState(State state) {
-    for (int i = start; i < stateList.size(); i++) {
-      if (state.gh > stateList.get(i).gh) {
-        stateList.add(i, state);
-        return;
+    int gh = (int) state.gh;
+    lastMax = Math.max(lastMax, gh);
+    states[gh].add(state);
+  }
+
+  private State pollFirst() {
+    for (int i = lastMax; i >= 0; i--) {
+      if (!states[i].isEmpty()) {
+        lastMax = i;
+        return states[i].poll();
       }
     }
-    stateList.add(stateList.size(), state);
+    return null;
   }
 
   private State getFirst() {
-    State state = stateList.get(start);
-    start++;
-    return state;
+    for (int i = lastMax; i >= 0; i--) {
+      if (!states[i].isEmpty()) {
+        lastMax = i;
+        return states[i].peek();
+      }
+    }
+    return null;
   }
 
 
-  public void startSearch() {
+  public String startSearch(long timeLimit) {
+    long start = System.currentTimeMillis();
+
     State initState = getInitState();
     addState(initState);
 
+    long count = 0;
+    long time;
     while (true) {
-      State maxState = getFirst();
+      count++;
+      if (count % 10 ==0) {
+        time = System.currentTimeMillis() - start;
+        if (time > timeLimit) {
+          return pollFirst().toString();
+        }
+      }
+      State maxState = pollFirst();
 
       Set<State> adjStates = maxState.getAdjStates();
+
       if (adjStates.size() == 0) {
-        results.add(maxState);
-        currentResult ++;
-        if (currentResult >= MAX) {
-          return;
-        }
+        return maxState.toString();
       }
 
       for (State state : adjStates) {
@@ -50,6 +75,7 @@ public abstract class AStar {
   }
 
   public void output() {
-    System.out.println(results.get(0));
+    System.out.println("result: " + result);
+    System.out.println("gh value: " + result.g);
   }
 }

@@ -11,12 +11,13 @@ public abstract class AStar {
 
   int[] stateCountInThatDay;
 
+  @SuppressWarnings("unchecked")
   public AStar(int maxValue) {
     this.maxValue = maxValue;
     lastMax = maxValue;
     states = new Queue[maxValue + 1];
     for (int i = 0; i <= maxValue; i++) {
-      states[i] = new LinkedList<>();
+      states[i] = new LinkedList<State>();
     }
 
     stateCountInThatDay = new int[SLAlgo.data.days + 1];
@@ -54,11 +55,12 @@ public abstract class AStar {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   private void filterStates() {
     int currentLastMax = lastMax;
     Queue<State>[] newStates = new Queue[maxValue + 1];
     for (int i = 0; i <= maxValue; i++) {
-      newStates[i] = new LinkedList<>();
+      newStates[i] = new LinkedList<State>();
     }
 
     int maxDay = 0;
@@ -113,7 +115,7 @@ public abstract class AStar {
           filterStates();
           filterCount++;
           if (filterCount == MAX) {
-            System.out.println("reached limit");
+            //System.out.println("reached limit");
             return pollFirst().toString();
           }
         }

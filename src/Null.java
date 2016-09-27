@@ -46,10 +46,7 @@ public class Null {
     // so I set it as 100 second,
     String result = data.normalizeString(aStar.startSearch(100 * 1000));
 
-    System.out.println("time:" + (System.currentTimeMillis() - start));
     System.out.println(result);
-    System.out.println(data.isValid(result));
-    System.out.println(data.calculateValue(result));
 //
 //    Null ot = new Null(fileNameString);
 //    System.out.println(ot.isValid(result));

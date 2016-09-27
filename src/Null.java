@@ -31,7 +31,10 @@ public class Null {
   public static void main(String[] args) {
     long start = System.currentTimeMillis();
 
-    String fileNameString = "input.txt";
+    String fileNameString = "given_info.txt";
+    if (args != null && args.length > 0) {
+      fileNameString = args[0];
+    }
 
     Null data = new Null(fileNameString);
     SLAlgo.init(data);
@@ -46,7 +49,7 @@ public class Null {
     // so I set it as 100 second,
     String result = data.normalizeString(aStar.startSearch(100 * 1000));
 
-    System.out.println(result);
+    System.out.print(result);
 //
 //    Null ot = new Null(fileNameString);
 //    System.out.println(ot.isValid(result));
@@ -286,7 +289,7 @@ public class Null {
       if (i < arr.length) {
         normalized += arr[i] + "\n";
       } else {
-        normalized +="\n";
+//        normalized +="\n";
       }
     }
     return  normalized;

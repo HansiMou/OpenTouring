@@ -2,7 +2,6 @@ import java.util.*;
 
 public class PathNode extends State {
 
-  int day;
   int site;
   int finishTime;
   // including this site

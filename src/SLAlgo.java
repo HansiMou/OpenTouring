@@ -9,7 +9,7 @@ public class SLAlgo {
 
 
   public static void main(String[] args) {
-    Null data = new Null("input.txt");
+    Null data = new Null("input1.txt");
     SLAlgo.init(data);
     if (mValue[0] > Integer.MAX_VALUE) {
       System.out.println("Maximum value exceeds INT_MAX");

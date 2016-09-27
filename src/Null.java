@@ -44,7 +44,7 @@ public class Null {
 
     // this is the time limit to run this function, in milliseconds
     // so I set it as 100 second,
-    String result = aStar.startSearch(100 * 1000);
+    String result = data.normalizeString(aStar.startSearch(100 * 1000));
 
     System.out.println("time:" + (System.currentTimeMillis() - start));
     System.out.println(result);
@@ -278,5 +278,21 @@ public class Null {
       }
     }
     return sum;
+  }
+
+  // result need to be normalized just in case we don't visit any site in some day
+  // because I interrupt the search when time limit is reached, the last few days might be empty.
+  public String normalizeString(String result) {
+    String[] arr = result.split("\n");
+    String normalized = "";
+    for (int i=0;i<days;i++) {
+      if (i < arr.length) {
+        normalized += arr[i] + "\n";
+      } else {
+        normalized +="\n";
+      }
+    }
+    return  normalized;
+
   }
 }

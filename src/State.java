@@ -4,6 +4,7 @@ public abstract class State {
   public double g = 0;
   public double h = 0;
   public double gh = 0;
+  public int day;
 
   public abstract Set<State> getAdjStates();
 }

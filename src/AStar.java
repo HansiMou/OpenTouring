@@ -92,12 +92,12 @@ public abstract class AStar {
     long start = System.currentTimeMillis();
     int days = SLAlgo.data.days;
 
-    int MAX = days + 5;
+    int MAX = (int) (days * 1.5) + 1;
     long[] limits = new long[MAX];
+    limits[0] = 0;
 
-
-    for (int i = 0; i < MAX; i++) {
-      limits[i] = timeLimit / MAX * (i+1);
+    for (int i = 1; i < MAX; i++) {
+      limits[i] = (long) ((timeLimit - limits[i - 1]) * 0.4) + limits[i - 1];
     }
 
     State initState = getInitState();
